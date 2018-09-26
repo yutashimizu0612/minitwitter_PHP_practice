@@ -9,13 +9,27 @@ if(isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()){
   $members = $db->prepare('SELECT * FROM members WHERE id=?');
   $members->execute(array($_SESSION['id']));
   $member = $members->fetch();
-  //DM先の投稿情報を取得
-  $directMessages = $db->prepare('SELECT m.name,m.picture,p.* FROM members m,posts p WHERE m.id=p.member_id AND p.id=? ORDER BY p.created DESC');
-  $directMessages->execute(array($_REQUEST['dm']));
 } else {
   header('Location:index.php');
   exit();
 }
+
+//ダイレクトメッセージを記録する
+if(!empty($_POST)){
+  if(isset($_POST['directMessage'])){
+    $dm = $db->prepare('INSERT INTO directMessages SET dm_message=?,member_id=?,created=NOW()');
+    $dm->execute(array(
+      $_POST['directMessage'],
+      $member['id'],
+    ));
+    header('Location:index.php');
+    exit();
+  }
+}
+
+  //DM先の投稿情報を取得
+  $directMessages = $db->prepare('SELECT m.name,m.picture,p.* FROM members m,posts p WHERE m.id=p.member_id AND p.id=? ORDER BY p.created DESC');
+  $directMessages->execute(array($_REQUEST['dm']));
 
 //htmlspecialcharsのショートカット
 function h($value){
