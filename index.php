@@ -115,7 +115,7 @@ function makeLink($value){
       <p><?php echo makeLink(h($post['message']));?><span class="name">（<?php echo h($post['name']); ?>）</span>
       [<a href="index.php?res=<?php echo h($post['id']); ?>">Re</a>]</p>
       [<a href="index.php?rt=<?php echo h($post['id']); ?>">RT</a>]</p>
-      [<a href="directMessage.php">DM</a>]</p>
+      [<a href="directMessage.php?dm=<?php echo h($post['id']); ?>">DM</a>]</p>
       <p class="day">
         <a href="view.php?id=<?php echo h($post['id']); ?>">
          <?php echo h($post['created']); ?>
